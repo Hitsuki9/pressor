@@ -20,23 +20,37 @@ async function compress(file: File, limit = 500, accuracy = 0.8) {
   const proportion = 0.75;
   let preScale = 1;
   let scale = 0.5;
+  let quality = 0.92;
+
   let canvas = image2Canvas(img, scale);
-  let newDataURL = canvas2DataURL(canvas, type);
+  let newDataURL = canvas2DataURL(canvas, type, quality);
   let estimatedSize = newDataURL.length * proportion;
 
-  let i = 0;
+  let i = 0; // 连续提升 scale 的次数，超过阈值说明品质过低
   while (estimatedSize > target.max || estimatedSize < target.min) {
-    // 平均循环 56 次后 scale 无法更加精确了
-    if (i++ === 56) break;
     console.log(estimatedSize);
     if (estimatedSize > target.max) {
+      i = 0;
       [scale, preScale] = [scale - Math.abs(preScale - scale) / 2, scale];
     } else {
-      [scale, preScale] = [scale + Math.abs(preScale - scale) / 2, scale];
+      // 连续提升 3 次至 0.9 以上
+      if (i++ >= 3 && scale > 0.9) {
+        if (quality !== 1) {
+          i = 0;
+
+          preScale = 1;
+          scale = 0.5;
+          quality = 1;
+        } else break;
+      } else {
+        [scale, preScale] = [scale + Math.abs(preScale - scale) / 2, scale];
+      }
     }
+    if (scale === preScale) break; // TODO
     console.log('scale', scale);
+
     canvas = image2Canvas(img, scale);
-    newDataURL = canvas2DataURL(canvas, type);
+    newDataURL = canvas2DataURL(canvas, type, quality);
     estimatedSize = newDataURL.length * proportion;
   }
 
