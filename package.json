@@ -1,6 +1,7 @@
 {
   "name": "pressor",
   "version": "0.1.0",
+  "expose": "Pressor",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
