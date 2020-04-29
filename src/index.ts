@@ -46,14 +46,13 @@ async function compress(file: File, limit = 500, accuracy = 1) {
     } else {
       // 连续提升 3 次至 0.9 以上且从没有降低过
       if (i++ >= 3 && scale > 0.9 && !flag) {
-        if (quality !== 1) {
-          i = 0;
-          flag = false;
+        if (quality === 1) break;
 
-          quality = 1;
-          preScale = 1;
-          scale = 0.5;
-        } else break;
+        i = 0;
+        flag = false;
+        quality = 1;
+        preScale = 1;
+        scale = 0.5;
       } else {
         [scale, preScale] = [scale + Math.abs(preScale - scale) / 2, scale];
       }
