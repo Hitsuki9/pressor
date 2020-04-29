@@ -1,7 +1,10 @@
 import path from 'path';
 import babel from 'rollup-plugin-babel';
 import resolve from '@rollup/plugin-node-resolve';
+import { terser } from 'rollup-plugin-terser';
 import { name, expose } from './package.json';
+
+const isProd = process.env.NODE_ENV === 'production';
 
 export default {
   input: path.join(__dirname, 'src/index.ts'),
@@ -16,6 +19,7 @@ export default {
     }),
     resolve({
       extensions: ['.mjs', '.js', '.json', '.node', '.ts']
-    })
+    }),
+    ...(isProd ? [terser()] : [])
   ]
 };

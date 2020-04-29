@@ -5,11 +5,11 @@ import canvas2DataURL from './canvas2DataURL';
 import dataURL2File from './dataURL2File';
 import { assert } from './utils';
 
-async function compress(file: File, limit = 500, accuracy = 1) {
+async function compress(file: File, limit = 500, accuracy = 0.8) {
   assert(limit >= 0.1, 'The "limit" parameter cannot below 0.1.');
 
   const { type, name, size, lastModified } = file;
-  console.log('origin', size);
+  // console.log('origin', size);
   const target = {
     max: limit * 1024,
     min: limit * accuracy * 1024
@@ -27,14 +27,14 @@ async function compress(file: File, limit = 500, accuracy = 1) {
   let scale = 0.5;
   let lastClosestDataURL: string | undefined;
 
-  let canvas = image2Canvas(img, scale);
+  const canvas = image2Canvas(img, scale);
   let newDataURL = canvas2DataURL(canvas, type, quality);
   let estimatedSize = newDataURL.length * proportion;
   lastClosestDataURL =
     estimatedSize < target.max ? newDataURL : lastClosestDataURL;
 
-  console.log('scale', scale);
-  console.log(estimatedSize);
+  // console.log('scale', scale);
+  // console.log(estimatedSize);
 
   let i = 0; // 连续提升 scale
   let flag = false; // 降低过 scale 的标记
@@ -64,14 +64,14 @@ async function compress(file: File, limit = 500, accuracy = 1) {
       break;
     estimatedSize = newDataURL.length * proportion;
 
-    console.log('scale', scale);
-    console.log(estimatedSize);
+    // console.log('scale', scale);
+    // console.log(estimatedSize);
 
     lastClosestDataURL =
       estimatedSize < target.max ? newDataURL : lastClosestDataURL;
   }
 
-  console.log('end', estimatedSize);
+  // console.log('end', estimatedSize);
   assert(lastClosestDataURL, 'Cannot compress to the target size.');
   return dataURL2File(lastClosestDataURL as string, name, type, lastModified);
 }
