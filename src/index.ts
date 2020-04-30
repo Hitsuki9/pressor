@@ -5,6 +5,9 @@ import canvas2DataURL from './canvas2DataURL';
 import dataURL2File from './dataURL2File';
 import { assert } from './utils';
 
+const INIT_PRE_SCALE = 1;
+const INIT_SCALE = 0.5;
+
 async function compress(file: File, limit = 500, accuracy = 0.8) {
   assert(limit >= 0.1, 'The "limit" parameter cannot below 0.1.');
 
@@ -23,8 +26,8 @@ async function compress(file: File, limit = 500, accuracy = 0.8) {
   // 直接使用次比例估算结果
   const proportion = 0.75;
   let quality = 0.92;
-  let preScale = 1;
-  let scale = 0.5;
+  let preScale = INIT_PRE_SCALE;
+  let scale = INIT_SCALE;
   let lastClosestDataURL: string | undefined;
 
   const canvas = image2Canvas(img, scale);
@@ -36,7 +39,7 @@ async function compress(file: File, limit = 500, accuracy = 0.8) {
   // console.log('scale', scale);
   // console.log(estimatedSize);
 
-  let i = 0; // 连续提升 scale
+  let i = 0; // 连续提升 scale 的次数，超过阈值说明品质有可能过低
   let flag = false; // 降低过 scale 的标记
   while (estimatedSize > target.max || estimatedSize < target.min) {
     if (estimatedSize > target.max) {
@@ -51,8 +54,8 @@ async function compress(file: File, limit = 500, accuracy = 0.8) {
         i = 0;
         flag = false;
         quality = 1;
-        preScale = 1;
-        scale = 0.5;
+        preScale = INIT_PRE_SCALE;
+        scale = INIT_SCALE;
       } else {
         [scale, preScale] = [scale + Math.abs(preScale - scale) / 2, scale];
       }

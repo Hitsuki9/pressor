@@ -1,7 +1,7 @@
 export default function dataURL2File(
   dataURL: string,
-  type: string,
   name: string,
+  type: string,
   lastModified: number
 ) {
   const bstr = atob(dataURL.split(',')[1]);
