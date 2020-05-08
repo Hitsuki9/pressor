@@ -1,11 +1,11 @@
 {
   "name": "pressor",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "expose": "Pressor",
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "cross-env NODE_ENV=development rollup -w -m -c",
+    "dev": "rollup -w -m -c",
     "build": "cross-env NODE_ENV=production rollup -c",
     "lint": "prettier --write \"./**/*.{js,ts,json,md}\" & eslint \"./src/**/*.{ts,js}\""
   },

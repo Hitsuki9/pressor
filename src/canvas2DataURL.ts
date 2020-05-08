@@ -1,7 +1,7 @@
 export default function canvas2DataURL(
   canvas: HTMLCanvasElement,
   type: string,
-  quality: number
+  quality?: number
 ) {
   return canvas.toDataURL(type, quality);
 }

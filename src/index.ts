@@ -8,14 +8,32 @@ import { assert } from './utils';
 const INIT_PRE_SCALE = 1;
 const INIT_SCALE = 0.5;
 
-async function compress(file: File, limit = 500, accuracy = 0.8) {
+async function compress(
+  file: File,
+  limit: number | string = 500,
+  accuracy: number | string = 0.8
+) {
+  assert(
+    file instanceof File,
+    'The "file" parameter should be a File instance.'
+  );
+
+  limit = Number.parseFloat(limit as string);
+  accuracy = Number.parseFloat(accuracy as string);
+
+  assert(!Number.isNaN(limit), 'The "limit" parameter should be a number.');
+  assert(
+    !Number.isNaN(accuracy),
+    'The "accuracy" parameter should be a number.'
+  );
   assert(limit >= 0.1, 'The "limit" parameter cannot below 0.1.');
+  accuracy = accuracy > 1 ? 1 : accuracy < 0 ? 0 : accuracy;
 
   const { type, name, size, lastModified } = file;
   // console.log('origin', size);
   const target = {
     max: limit * 1024,
-    min: limit * accuracy * 1024
+    min: limit * (accuracy as number) * 1024
   };
   if (size < target.max) return file;
 
