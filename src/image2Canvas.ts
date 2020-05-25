@@ -7,11 +7,12 @@ export default function image2Canvas(
   img: HTMLImageElement,
   scale: number | string = 1
 ) {
-  scale = Number.parseFloat(scale as string);
   assert(
     img instanceof HTMLImageElement,
     '"image2Canvas" should get a "img" parameter which is a HTMLImageElement instance.'
   );
+
+  scale = Number.parseFloat(scale as string);
   assert(
     !Number.isNaN(scale),
     '"image2Canvas" should get a "scale" parameter which is a number.'

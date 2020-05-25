@@ -3,7 +3,7 @@ import { assert } from './utils';
 export default function file2DataURL(file: File) {
   assert(
     file instanceof File,
-    '"file2DataURL" should be called with a File instance.'
+    '"file2DataURL" should get a "file" parameter which is a File instance.'
   );
 
   return new Promise<string>((resolve) => {

@@ -19,14 +19,14 @@ async function compress(
   );
 
   limit = Number.parseFloat(limit as string);
-  accuracy = Number.parseFloat(accuracy as string);
-
   assert(!Number.isNaN(limit), 'The "limit" parameter should be a number.');
+  assert(limit >= 0.1, 'The "limit" parameter cannot below 0.1.');
+
+  accuracy = Number.parseFloat(accuracy as string);
   assert(
     !Number.isNaN(accuracy),
     'The "accuracy" parameter should be a number.'
   );
-  assert(limit >= 0.1, 'The "limit" parameter cannot below 0.1.');
   accuracy = accuracy > 1 ? 1 : accuracy < 0 ? 0 : accuracy;
 
   const { type, name, size, lastModified } = file;

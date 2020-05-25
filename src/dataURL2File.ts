@@ -6,10 +6,6 @@ export default function dataURL2File(
   type?: string,
   lastModified?: number | string
 ) {
-  dataURL = String(dataURL);
-  name = String(name);
-
-  type = type === void 0 ? type : String(type);
   lastModified =
     lastModified === void 0
       ? lastModified
@@ -21,6 +17,10 @@ export default function dataURL2File(
       '"dataURL2File" should get a optional "lastModified" parameter which is a number.'
     );
   }
+
+  dataURL = String(dataURL);
+  name = String(name);
+  type = type === void 0 ? type : String(type);
 
   const bstr = atob(dataURL.split(',')[1]);
   const len = bstr.length;
