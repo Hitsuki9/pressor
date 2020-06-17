@@ -41,7 +41,7 @@ async function compress(
   const img = await dataURL2Image(dataURL);
 
   // 图片大小与 dataURL.length 的比例约为 0.75
-  // 直接使用次比例估算结果
+  // 直接使用此比例估算结果
   const proportion = 0.75;
   let quality = 0.92;
   let preScale = INIT_PRE_SCALE;
