@@ -8,21 +8,17 @@ import { assert } from './utils';
 const INIT_PRE_SCALE = 1;
 const INIT_SCALE = 0.5;
 
-async function compress(
-  file: File,
-  limit: number | string = 500,
-  accuracy: number | string = 0.8
-) {
+async function compress(file: File, limit = 500, accuracy = 0.8) {
   assert(
     file instanceof File,
     'The "file" parameter should be a File instance.'
   );
 
-  limit = Number.parseFloat(limit as string);
+  limit = Number(limit);
   assert(!Number.isNaN(limit), 'The "limit" parameter should be a number.');
   assert(limit >= 0.1, 'The "limit" parameter cannot below 0.1.');
 
-  accuracy = Number.parseFloat(accuracy as string);
+  accuracy = Number(accuracy);
   assert(
     !Number.isNaN(accuracy),
     'The "accuracy" parameter should be a number.'
@@ -30,7 +26,6 @@ async function compress(
   accuracy = accuracy > 1 ? 1 : accuracy < 0 ? 0 : accuracy;
 
   const { type, name, size, lastModified } = file;
-  // console.log('origin', size);
   const target = {
     max: limit * 1024,
     min: limit * (accuracy as number) * 1024
@@ -93,7 +88,7 @@ async function compress(
   }
 
   // console.log('end', estimatedSize);
-  assert(lastClosestDataURL, 'Cannot compress to the target size.');
+  assert(!!lastClosestDataURL, 'Cannot compress to the target size.');
   return dataURL2File(lastClosestDataURL as string, name, type, lastModified);
 }
 
