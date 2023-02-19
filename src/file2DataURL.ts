@@ -1,14 +1,8 @@
-import { assert } from './utils';
-
 export default function file2DataURL(file: File) {
-  assert(
-    file instanceof File,
-    '"file2DataURL" should get a "file" parameter which is a File instance.'
-  );
-
-  return new Promise<string>((resolve) => {
+  return new Promise<string>((resolve, reject) => {
     const reader = new FileReader();
-    reader.onload = ({ target }) => resolve(target!.result as string);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(new Error('Failed to read file.'));
     reader.readAsDataURL(file);
   });
 }

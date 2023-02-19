@@ -1,7 +1,6 @@
 import file2DataURL from './file2DataURL';
 import dataURL2Image from './dataURL2Image';
 import image2Canvas from './image2Canvas';
-import canvas2DataURL from './canvas2DataURL';
 import dataURL2File from './dataURL2File';
 import { assert } from './utils';
 
@@ -44,13 +43,10 @@ async function compress(file: File, limit = 500, accuracy = 0.8) {
   let lastClosestDataURL: string | undefined;
 
   const canvas = image2Canvas(img, scale);
-  let newDataURL = canvas2DataURL(canvas, type, quality);
+  let newDataURL = canvas.toDataURL(type, quality);
   let estimatedSize = newDataURL.length * proportion;
   lastClosestDataURL =
     estimatedSize < target.max ? newDataURL : lastClosestDataURL;
-
-  // console.log('scale', scale);
-  // console.log(estimatedSize);
 
   let i = 0; // 连续提升 scale 的次数，超过阈值说明品质有可能过低
   let flag = false; // 降低过 scale 的标记
@@ -75,28 +71,17 @@ async function compress(file: File, limit = 500, accuracy = 0.8) {
     }
     if (scale === preScale) break;
     image2Canvas(img, scale);
-    newDataURL = canvas2DataURL(canvas, type, quality);
+    newDataURL = canvas.toDataURL(type, quality);
     if (lastClosestDataURL && newDataURL.length === lastClosestDataURL.length)
       break;
     estimatedSize = newDataURL.length * proportion;
-
-    // console.log('scale', scale);
-    // console.log(estimatedSize);
 
     lastClosestDataURL =
       estimatedSize < target.max ? newDataURL : lastClosestDataURL;
   }
 
-  // console.log('end', estimatedSize);
   assert(!!lastClosestDataURL, 'Cannot compress to the target size.');
   return dataURL2File(lastClosestDataURL as string, name, type, lastModified);
 }
 
-export {
-  compress,
-  file2DataURL,
-  dataURL2Image,
-  image2Canvas,
-  canvas2DataURL,
-  dataURL2File
-};
+export { compress, file2DataURL, dataURL2Image, image2Canvas, dataURL2File };
