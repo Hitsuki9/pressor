@@ -6,9 +6,9 @@ Pressor is a tool to compress images to target size via canvas in browser
 
 ```sh
 npm install pressor
-// or
+# or
 yarn add pressor
-// or
+# or
 pnpm add pressor
 ```
 
