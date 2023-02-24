@@ -1,9 +1,38 @@
 # Pressor
 
-## Try
+Pressor is a tool to compress images to target size via canvas in browser
 
-1. install dependencies
+## Installing
 
-2. run `npm run dev` or `yarn run dev`
+```sh
+npm install pressor
+// or
+yarn add pressor
+// or
+pnpm add pressor
+```
 
-3. open `public/index.html`
+## Usage
+
+**compress:**
+
+The function signature of `compress` is:
+
+```ts
+function compress(file: File, limit: number, accuracy: number): Promise<File>;
+```
+
+- `file`: the image file which will be compressed
+- `limit`: the target size of the compressed file in kb, default to `500`
+- `accuracy`: the accuracy of produced file size, default to `0.8`
+
+example:
+
+```ts
+import { compress } from 'pressor';
+
+const inputChangeHandler = async (evt) => {
+  const file = evt.target.files[0];
+  const result = await compress(file);
+};
+```
