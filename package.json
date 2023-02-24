@@ -1,11 +1,14 @@
 {
   "name": "pressor",
-  "version": "0.1.0",
+  "version": "0.2.1",
   "description": "A tool to compress images to target size via canvas in browser",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "postinstall": "husky install",
+    "prepare": "husky install",
     "dev": "tsup --watch --sourcemap",
     "build": "tsup --minify",
     "lint": "lint-staged",
@@ -36,9 +39,9 @@
   "homepage": "https://github.com/Hitsuki9/pressor#readme",
   "devDependencies": {
     "@hitsuki9/prettier-config": "^1.0.0",
-    "@types/node": "^18.13.0",
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@typescript-eslint/parser": "^5.52.0",
+    "@types/node": "^18.14.1",
+    "@typescript-eslint/eslint-plugin": "^5.53.0",
+    "@typescript-eslint/parser": "^5.53.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "eslint": "^8.34.0",
     "husky": "^8.0.3",
@@ -47,7 +50,7 @@
     "prettier": "^2.8.4",
     "tsup": "^6.6.3",
     "typescript": "^4.9.5",
-    "vite": "^4.1.1",
+    "vite": "^4.1.4",
     "vue": "^3.2.47"
   }
 }
